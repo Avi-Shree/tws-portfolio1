@@ -27,7 +27,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt' # You can choose other distributions like 'zulu', 'temurin', etc.
 
-    # Run SonarQube scan
+    # Run SonarQube scan with debug logging
     - name: SonarQube Scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -39,7 +39,8 @@ jobs:
           -Dsonar.projectKey=your_project_key \
           -Dsonar.sources=. \
           -Dsonar.host.url=https://your-sonarqube-server.com \
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.login=$SONAR_TOKEN \
+          -X  # Enable full debug logging
 
     # Deploy static site to S3 bucket
     - name: Deploy static site to S3 bucket
