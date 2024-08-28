@@ -10,42 +10,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
 
-    # Configure AWS credentials for deployment
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
 
-    # Install Java 17 (required for SonarQube Scanner)
     - name: Set up JDK 17
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
         java-version: '17'
-        distribution: 'adopt' # You can use other distributions like 'temurin'
+        distribution: 'temurin'
 
-    # Verify Java version
     - name: Check Java Version
       run: java -version
 
-    # Run SonarQube scan with debug logging
     - name: SonarQube Scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
-        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-        unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-        export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
+        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
+        unzip sonar-scanner-cli-4.8.0.2856-linux.zip
+        export PATH=$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin
+        export JAVA_HOME=$JAVA_HOME_17_X64
         sonar-scanner \
           -Dsonar.projectKey=my-github-project \
           -Dsonar.sources=. \
           -Dsonar.host.url=http://43.204.103.239:9000 \
           -Dsonar.login=$SONAR_TOKEN \
-          -X  # Enable full debug logging
+          -X
 
-    # Deploy static site to S3 bucket
     - name: Deploy static site to S3 bucket
       run: aws s3 sync . s3://tws-profolio --delete
