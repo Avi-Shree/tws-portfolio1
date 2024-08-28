@@ -26,7 +26,10 @@ jobs:
         distribution: 'temurin'
 
     - name: Check Java Version
-      run: java -version
+      run: |
+        java -version
+        echo $JAVA_HOME
+        echo $PATH
 
     - name: SonarQube Scan
       env:
@@ -34,13 +37,16 @@ jobs:
       run: |
         wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
         unzip sonar-scanner-cli-4.8.0.2856-linux.zip
-        export PATH=$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin
-        export JAVA_HOME=$JAVA_HOME_17_X64
+        export PATH="$JAVA_HOME/bin:$PATH"
+        export PATH="$PWD/sonar-scanner-4.8.0.2856-linux/bin:$PATH"
+        which java
+        java -version
         sonar-scanner \
           -Dsonar.projectKey=my-github-project \
           -Dsonar.sources=. \
           -Dsonar.host.url=http://43.204.103.239:9000 \
           -Dsonar.login=$SONAR_TOKEN \
+          -Dsonar.java.binaries=. \
           -X
 
     - name: Deploy static site to S3 bucket
