@@ -25,7 +25,11 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'adopt' # You can choose other distributions like 'zulu', 'temurin', etc.
+        distribution: 'adopt' # You can use other distributions like 'temurin'
+
+    # Verify Java version
+    - name: Check Java Version
+      run: java -version
 
     # Run SonarQube scan with debug logging
     - name: SonarQube Scan
