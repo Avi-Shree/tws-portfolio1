@@ -36,9 +36,9 @@ jobs:
         unzip sonar-scanner-cli-4.6.2.2472-linux.zip
         export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
         sonar-scanner \
-          -Dsonar.projectKey=your_project_key \
+          -Dsonar.projectKey=my-github-project \
           -Dsonar.sources=. \
-          -Dsonar.host.url=https://your-sonarqube-server.com \
+          -Dsonar.host.url=http://43.204.103.239:9000 \
           -Dsonar.login=$SONAR_TOKEN \
           -X  # Enable full debug logging
 
