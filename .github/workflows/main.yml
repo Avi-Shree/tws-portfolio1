@@ -25,6 +25,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
+        distribution: 'adopt' # You can choose other distributions like 'zulu', 'temurin', etc.
 
     # Run SonarQube scan
     - name: SonarQube Scan
@@ -43,4 +44,3 @@ jobs:
     # Deploy static site to S3 bucket
     - name: Deploy static site to S3 bucket
       run: aws s3 sync . s3://tws-profolio --delete
-
